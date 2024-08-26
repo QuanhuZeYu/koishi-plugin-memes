@@ -1,0 +1,61 @@
+{
+  rest: '',
+  source: 'petpet <at id="421617689" name="格雷拉特"/>',
+  root: true,
+  session: Session {
+    id: 8,
+    event: {
+      id: 4205,
+      type: 'message-created',
+      platform: 'chronocat',
+      selfId: '3578620244',
+      timestamp: 1724662047000,
+      user: [Object],
+      channel: [Object],
+      guild: [Object],
+      member: {},
+      message: [Object]
+    },
+    locales: [],
+    _stripped: {
+      hasAt: false,
+      content: 'petpet <at id="421617689" name="格雷拉特"/>',
+      appel: false,
+      atSelf: false,
+      prefix: ''
+    },
+    guild: {
+      flag: 0,
+      assignee: '3578620244',
+      guildId: '373507639',
+      permissions: [],
+      locales: [],
+      platform: 'chronocat',
+      id: '373507639'
+    },
+    channel: {
+      flag: 0,
+      assignee: '3578620244',
+      guildId: '373507639',
+      permissions: [],
+      locales: [],
+      platform: 'chronocat',
+      id: '373507639'
+    },
+    user: { id: 3, flag: 0, authority: 1, permissions: [], locales: [] },
+    scope: 'commands.petpet.messages',
+    [Symbol(cordis.tracker)]: { associate: 'session', property: 'ctx' }
+  },
+  command: Command <petpet>,
+  args: [ '<at id="421617689" name="格雷拉特"/>' ],
+  options: {},
+  error: '',
+  next: [AsyncFunction (anonymous)]
+}
+
+session.user:
+{
+  id: '1624910218',
+  name: '泉户 黑崎',
+  avatar: 'http://thirdqq.qlogo.cn/headimg_dl?dst_uin=1624910218&spec=640'
+}
