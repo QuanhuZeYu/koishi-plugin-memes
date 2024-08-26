@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "exit code 0",
+    "test": "cho \"No tests available\"",
     "build": "tsc"
   },
   "keywords": [
