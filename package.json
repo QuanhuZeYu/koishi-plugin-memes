@@ -4,6 +4,7 @@
   "version": "0.1.0-beta.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
+  "homepage": "https://github.com/QuanhuZeYu/koishi-plugin-memes",
   "files": [
     "lib"
   ],
@@ -23,8 +24,16 @@
     "koishi": "^4.17.12",
     "@quanhuzeyu/koishi-plugin-memelib": "^0.1.2-beta.1"
   },
-  "repository": "https://github.com/QuanhuZeYu/koishi-plugin-memes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuanhuZeYu/koishi-plugin-memes"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
+  },
+  "koishi": {
+    "description": {
+      "zh": "纯ts实现的memes生成，无需部署额外的后端服务"
+    }
   }
 }
