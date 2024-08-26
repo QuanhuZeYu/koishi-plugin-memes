@@ -19,7 +19,6 @@ jobs:
       #     which ffmpeg    # 输出 FFmpeg 的路径
       # - run: npm ci
       - run: npm test
-        shell: /usr/bin/bash -e {0}
 
   publish-gpr:
     needs: build
