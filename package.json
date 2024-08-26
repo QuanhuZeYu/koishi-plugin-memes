@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "cho \"No tests available\"",
+    "test": "echo \"No tests available\"",
     "build": "tsc"
   },
   "keywords": [
