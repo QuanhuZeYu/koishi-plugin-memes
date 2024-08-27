@@ -17,7 +17,7 @@ async function petpet(session:Argv, message:string) {
         if (id != undefined) {
             const atUserAvaUrl = `http://thirdqq.qlogo.cn/headimg_dl?dst_uin=${id[1]}&spec=640`
             const pet = await urlToPet(atUserAvaUrl)
-            if (pet instanceof h) {
+            if (typeof pet === 'object') {
                 s.send(pet)
             } else {
                 s.send(pet+"；无法获取at对象的头像")
