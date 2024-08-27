@@ -19,10 +19,11 @@
     "plugin",
     "meme"
   ],
-  "devDependencies": {},
-  "peerDependencies": {
-    "koishi": "^4.17.12",
+  "devDependencies": {
     "@quanhuzeyu/koishi-plugin-memelib": "^0.1.2-beta.1"
+  },
+  "peerDependencies": {
+    "koishi": "^4.17.12"
   },
   "repository": {
     "type": "git",
