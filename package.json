@@ -30,7 +30,7 @@
     "url": "git+https://github.com/QuanhuZeYu/koishi-plugin-memes.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+  "registry": "https://npm.pkg.github.com/"
   },
   "koishi": {
     "description": {
