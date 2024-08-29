@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "homepage": "https://github.com/QuanhuZeYu/koishi-plugin-memes",
+  "private": "false",
   "files": [
     "lib"
   ],
@@ -23,7 +24,7 @@
     
   },
   "dependencies": {
-    "@quanhuzeyu/koishi-plugin-memelib": "^0.1.2-beta.1"
+     "@quanhuzeyu/koishi-plugin-memelib": "github:quanhuzeyu/koishi-plugin-memelib#v0.1.2-rc.1"
   },
   "peerDependencies": {
     "koishi": "^4.17.12"
@@ -33,7 +34,8 @@
     "url": "git+https://github.com/QuanhuZeYu/koishi-plugin-memes.git"
   },
   "publishConfig": {
-  "registry": "https://npm.pkg.github.com/"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/"
   },
   "koishi": {
     "description": {
