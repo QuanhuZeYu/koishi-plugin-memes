@@ -1,6 +1,11 @@
 # @quanhuzeyu/koishi-plugin-memes
 
 [![npm](https://img.shields.io/npm/v/@quanhuzeyu/koishi-plugin-memes?style=flat-square)](https://www.npmjs.com/package/@quanhuzeyu/koishi-plugin-memes)
+[![npm downloads](https://img.shields.io/npm/dm/koishi-plugin-emojihub-bili)](https://www.npmjs.com/@quanhuzeyu/koishi-plugin-memes)
+
+## 安装指南 🛠️
+
+浏览器搜索安装`FFMPEG`并设置好环境变量即可享用
 
 ## 用法
 
