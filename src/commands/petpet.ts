@@ -1,5 +1,5 @@
 import { Argv, h } from "koishi";
-import urlToBuffer from "../tools/getAvaImage";
+import memeTooles from '../tools'
 import { MemeGenerator } from "@quanhuzeyu/koishi-plugin-memelib";
 
 /**
@@ -8,6 +8,7 @@ import { MemeGenerator } from "@quanhuzeyu/koishi-plugin-memelib";
  * @param message 
  */
 async function petpet(session:Argv, message:string) {
+    console.log(message)
     const s = session.session
     // console.log(`arg:\n${arg1}`)
     if (typeof message === 'string') {
@@ -24,16 +25,10 @@ async function petpet(session:Argv, message:string) {
             }
         } else 
         // 参数如果是图片的逻辑
-        if (img != undefined) {
+        if (img) {
             const pet = await urlToPet(img[1])
-            if (typeof pet === 'object') {
-                s.send(pet)
-            } else {
-                s.send(pet+`；图片参数制作时出现问题    ${typeof pet}`)
-            }
+            s.send(pet)
         }
-        // session.session.send(atUserAvaUrl)  // 调试检查合成的url
-        
     }else if (typeof message ==='number') {
         defaultPetpet(session)
     } else {
@@ -72,7 +67,7 @@ async function defaultPetpet(argV:Argv, message:string=undefined):Promise<void> 
  */
 async function urlToPet(url:string):Promise<h|string> {
     // 通过URL获取图片并将其转换为Buffer
-    const buf = await urlToBuffer(url)
+    const buf = await memeTooles.urlToBuffer(url)
     const _b = MemeGenerator.tools.imageTools.isGif(buf)
     if (_b === false) {
         try {
@@ -101,6 +96,5 @@ async function urlToPet(url:string):Promise<h|string> {
         }
     }
 }
-
 
 export default petpet

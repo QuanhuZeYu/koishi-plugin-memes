@@ -1,3 +1,4 @@
 import urlToBuffer from "./getAvaImage";
 
-export const tools = {urlToBuffer}
+const tools = {urlToBuffer}
+export default tools
