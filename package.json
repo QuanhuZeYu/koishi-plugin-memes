@@ -12,7 +12,9 @@
   "scripts": {
     "test": "echo \"No tests available\"",
     "build": "tsc",
-    "allpub": "npm run build && npm publish --registry=https://registry.npmjs.org && npm publish --registry=https://npm.pkg.github.com"
+    "allpub": "npm run build && npm publish --registry=https://registry.npmjs.org && npm publish --registry=https://npm.pkg.github.com",
+    "pubgit": "npm run build && npm publish --registry=https://npm.pkg.github.com",
+    "pubnpm": "npm run build && npm publish --registry=https://registry.npmjs.org"
   },
   "keywords": [
     "chatbot",
