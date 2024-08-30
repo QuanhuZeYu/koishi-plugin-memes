@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-memes",
   "description": "纯ts实现的meme生成",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -15,8 +15,11 @@
     "koishi",
     "plugin"
   ],
-  "devDependencies": {},
   "peerDependencies": {
     "koishi": "^4.17.11"
+  },
+  "dependencies": {
+    "@quanhuzeyu/koishi-plugin-memelib": "github:quanhuzeyu/koishi-plugin-memelib",
+    "axios": "^1.7.5"
   }
 }
