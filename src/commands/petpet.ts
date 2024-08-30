@@ -71,24 +71,34 @@ async function defaultPetpet(argV:Argv, message:string=undefined):Promise<void> 
  * @returns 返回一个Promise，解析为头像图片的Buffer或错误信息字符串
  */
 async function urlToPet(url:string):Promise<h|string> {
-    try {
-        // 通过URL获取图片并将其转换为Buffer
-        const buf = await urlToBuffer(url)
-        // 将Buffer中的图片裁剪为圆形
-        const cir = await MemeGenerator.tools.imageTools.cropToCircle(buf)
-        // 使用处理后的圆形图片生pet
-        const pet = await MemeGenerator.Petpet(cir)
-        // 检查生成的宠物头像是否为Buffer类型
-        if ( pet instanceof Buffer) {
+    // 通过URL获取图片并将其转换为Buffer
+    const buf = await urlToBuffer(url)
+    const _b = MemeGenerator.tools.imageTools.isGif(buf)
+    if (_b === false) {
+        try {
+            // 将Buffer中的图片裁剪为圆形
+            const cir = await MemeGenerator.tools.imageTools.cropToCircle(buf)
+            // 使用处理后的圆形图片生pet
+            const pet = await MemeGenerator.Petpet(cir)
+            // 检查生成的宠物头像是否为Buffer类型
+            if ( pet instanceof Buffer) {
+                return h.image(pet, 'image/gif')
+            } else {
+                return "制作头像时出现错误"
+            }
+        } catch (err) {
+            // 捕获并打印异常
+            console.log(err)
+            // 将异常抛出，以便外部处理
+            throw err
+        }
+    } else if (_b === true) {
+        const pet = await MemeGenerator.Petpet(buf,true)
+        if (pet instanceof Buffer) {
             return h.image(pet, 'image/gif')
         } else {
             return "制作头像时出现错误"
         }
-    } catch (err) {
-        // 捕获并打印异常
-        console.log(err)
-        // 将异常抛出，以便外部处理
-        throw err
     }
 }
 

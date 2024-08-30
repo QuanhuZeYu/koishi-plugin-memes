@@ -1,4 +1,5 @@
-import { Context, Schema } from 'koishi'
+import { Context } from 'koishi'
+import {Schema} from 'koishi'
 import commands from './commands'
 
 export const name = '模因'

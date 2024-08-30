@@ -1,0 +1,16 @@
+- id: vl5fhb
+  name: yakumo
+- id: 02liwz
+  name: yakumo/list
+- id: tp3j65
+  name: yakumo/prepare
+- id: pv3i38
+  name: yakumo/publish
+- id: y0cdko
+  name: yakumo/test
+- id: w5vmfi
+  name: yakumo/upgrade
+- id: ruul24
+  name: yakumo/version
+- id: 8nd9cy
+  name: yakumo/run

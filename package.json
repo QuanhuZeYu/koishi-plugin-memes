@@ -1,7 +1,7 @@
 {
   "name": "@quanhuzeyu/koishi-plugin-memes",
   "description": "纯ts实现的memes生成，无需部署额外的后端服务",
-  "version": "1.0.3",
+  "version": "1.0.10-rc.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "homepage": "https://github.com/QuanhuZeYu/koishi-plugin-memes",
@@ -10,11 +10,14 @@
   ],
   "license": "MIT",
   "scripts": {
+    "pause": "timeout /t 1 /nobreak > nul",
     "test": "echo \"No tests available\"",
     "build": "tsc",
-    "allpub": "npm run build && npm publish --registry=https://registry.npmjs.org && npm publish --registry=https://npm.pkg.github.com",
-    "pubgit": "npm run build && npm publish --registry=https://npm.pkg.github.com",
-    "pubnpm": "npm run build && npm publish --registry=https://registry.npmjs.org"
+    "allpub": "npm run pubgit && npm run pubnpm",
+    "pubgit": "npm run build && yakumo publish --registry=https://npm.pkg.github.com",
+    "pubnpm": "npm run build && yakumo publish --registry=https://registry.npmjs.org",
+    "clean": "rmdir /s /q lib",
+    "cacheclean": "npm cache clean --force"
   },
   "keywords": [
     "chatbot",
@@ -23,7 +26,8 @@
     "meme"
   ],
   "dependencies": {
-    "@quanhuzeyu/koishi-plugin-memelib": "^0.1.2-rc.5"
+    "@quanhuzeyu/koishi-plugin-memelib": "^0.1.2-rc.5",
+    "axios": "^1.7.5"
   },
   "peerDependencies": {
     "koishi": "^4.17.12"
