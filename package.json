@@ -11,7 +11,8 @@
   "license": "MIT",
   "scripts": {
     "test": "echo \"No tests available\"",
-    "build": "tsc"
+    "build": "tsc",
+    "allpub": "npm run build && npm publish --registry=https://registry.npmjs.org && npm run publish --registry=https://npm.pkg.github.com"
   },
   "keywords": [
     "chatbot",
