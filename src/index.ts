@@ -3,6 +3,7 @@ import {Schema} from 'koishi'
 import commands from './commands'
 
 export const name = '模因'
+export const QHZY_MEME_BASEDIR = __dirname
 
 export interface Config {}
 

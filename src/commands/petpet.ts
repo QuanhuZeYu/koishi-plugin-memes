@@ -1,6 +1,6 @@
 import { Argv, h } from "koishi";
 import memeTooles from '../tools'
-import { MemeGenerator } from "@quanhuzeyu/koishi-plugin-memelib";
+import { MemeGenerator } from "@quanhuzeyu/memelib";
 
 /**
  * 当使用 petpet 指令触发的函数
