@@ -1,7 +1,7 @@
 # @quanhuzeyu/koishi-plugin-memes
 
 [![npm](https://img.shields.io/npm/v/@quanhuzeyu/koishi-plugin-memes?style=flat-square)](https://www.npmjs.com/package/@quanhuzeyu/koishi-plugin-memes)
-[![npm downloads](https://img.shields.io/npm/dm/koishi-plugin-emojihub-bili)](https://www.npmjs.com/@quanhuzeyu/koishi-plugin-memes)
+[![npm downloads](https://img.shields.io/npm/dm/@quanhuzeyu/koishi-plugin-memes)](https://www.npmjs.com/@quanhuzeyu/koishi-plugin-memes)
 
 ## 安装指南 🛠️
 
