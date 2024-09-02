@@ -25,6 +25,11 @@ export function apply(ctx: Context) {
       .action( (_, mes) => {
         commands.hug(_, mes)
       })
+    ctx.command('hammer [message:text]')
+      .usage('hammer+空格+参数(最多读取一个，可不提供)<@对象|图片>')
+      .action( (_, mes) => {
+        commands.hammer(_, mes)
+      })
 
 
     // 测试用指令
