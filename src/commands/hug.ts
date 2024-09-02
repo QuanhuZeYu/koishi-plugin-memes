@@ -22,6 +22,12 @@ async function hug(argv: Argv, message: string) {
         // 如果只有一个参数，需要将用户头像作为self传入
         if(args.length < 2) {
             const self = await tools.avatarTools.getSelfAvatar(s)
+            let arg1:Buffer
+            if(args[1]?.id) {arg1 = await tools.avatarTools.qcodeGetAvatar(args[1].id)}
+            else if(args[1]?.src) {arg1 = await tools.avatarTools.urlToBuffer(args[1].src)}
+            const hug = await MemeGenerator.hug(self,arg1)
+            const _h = tools.convert2SendMessage.gif2Message(hug)
+            s.send(_h)
         } else if(args.length >= 2) {
             const _arg1 = args[0];
             let arg1:Buffer
