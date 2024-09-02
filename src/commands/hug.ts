@@ -1,7 +1,7 @@
 import Ffmpeg from 'fluent-ffmpeg';
 
 import { Argv, h, Logger } from "koishi";
-import tools from "../tools";
+import tools from "../tools/_index";
 import { logger, QHZY_MEME_BASEDIR } from "..";
 import fs from 'fs/promises'
 import path from "path";
@@ -17,49 +17,23 @@ async function hug(argv: Argv, message: string) {
 
         const id = tools.matcher.xmlMatcher('id', message);
         const imgs = tools.matcher.xmlMatcher('src', message);
-
-        let isGif = false;
-
-        if (imgs && imgs instanceof Array && imgs.length > 0) {
-            for (const item of imgs) {
-                const buffer = await tools.avatarTools.urlToBuffer(item);
-
-                if (MemeGenerator.tools.imageTools.isGif(buffer)) {
-                    isGif = true;
-                    return s.send("不支持GIF参数");
-                }
-            }
-        }
-    // endregion
-        if (!isGif) {
-            const imgCount = imgs?.length || 0;
-
-            if (imgCount < 1 && id.length < 1) {
-                s.send("[memes hug] 请至少发送一张图片作为参数");
-            } else if (imgCount < 1 && id.length >= 1) {
-                const selfAva = await tools.avatarTools.getSelfAvatar(s);
-                const userAva = await tools.avatarTools.qcodeGetAvatar(id[0]);
-                // 生成
-                const hug = await MemeGenerator.hug(selfAva, userAva);
-                MemeGenerator.tools.gifTools.saveGifToFile(hug, path.resolve(QHZY_MEME_BASEDIR, 'out/hug.gif'))
-                const re = h.image(hug, 'image/gif');
-                
-                return s.send(re);
-            } else if (imgCount === 1) {
-                const selfAva = await tools.avatarTools.getSelfAvatar(s);
-
-                const hug = await MemeGenerator.hug(selfAva, imgs[0]);
-                const re = h.image(hug, 'image/gif');
-                return s.send(re);
-            } else if (imgCount >= 2) {
-                const input1 = await tools.avatarTools.urlToBuffer(imgs[0]);
-                const input2 = await tools.avatarTools.urlToBuffer(imgs[1]);
-
-                const hug = await MemeGenerator.hug(input1, input2);
-                return s.send(h.image(hug, 'image/gif'));
-            }
-        } else {
-            s.send("[memes hug] 抱歉，暂不支持GIF格式的图片");
+        // 从头到尾收集参数
+        const args = tools.matcher.argCollector(message);
+        // 如果只有一个参数，需要将用户头像作为self传入
+        if(args.length < 2) {
+            const self = await tools.avatarTools.getSelfAvatar(s)
+        } else if(args.length >= 2) {
+            const _arg1 = args[0];
+            let arg1:Buffer
+            if(_arg1?.id) {arg1 = await tools.avatarTools.qcodeGetAvatar(_arg1.id)}
+            else{arg1 = await tools.avatarTools.urlToBuffer(_arg1.src)}
+            const _arg2 = args[1];
+            let arg2:Buffer
+            if(_arg2?.id) {arg2 = await tools.avatarTools.qcodeGetAvatar(_arg2.id)}
+            else{arg2 = await tools.avatarTools.urlToBuffer(_arg2.src)}
+            const hug = await MemeGenerator.hug(arg1, arg2)
+            const _h = tools.convert2SendMessage.gif2Message(hug)
+            s.send(_h)
         }
     }
 }
