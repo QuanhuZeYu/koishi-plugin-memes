@@ -30,7 +30,8 @@ async function hug(argv: Argv, message: string) {
             const hug = await MemeGenerator.hug(arg1, arg2)
             _h = await tools.convert2SendMessage.gif2Message(hug)
         } else if(arg1 || arg2) {
-            const hug = await MemeGenerator.hug(self, arg1 || arg2)
+            const input = arg1||arg2
+            const hug = await MemeGenerator.hug(self, input)
             _h = await tools.convert2SendMessage.gif2Message(hug)
         }
         if(_h)
