@@ -19,28 +19,24 @@ async function hug(argv: Argv, message: string) {
         const imgs = tools.matcher.xmlMatcher('src', message);
         // 从头到尾收集参数
         const args = tools.matcher.argCollector(message);
-        // 如果只有一个参数，需要将用户头像作为self传入
-        if(args.length < 2) {
-            const self = await tools.avatarTools.getSelfAvatar(s)
-            let arg1:Buffer
-            if(args[1]?.id) {arg1 = await tools.avatarTools.qcodeGetAvatar(args[1].id)}
-            else if(args[1]?.src) {arg1 = await tools.avatarTools.urlToBuffer(args[1].src)}
-            const hug = await MemeGenerator.hug(self,arg1)
-            const _h = tools.convert2SendMessage.gif2Message(hug)
-            s.send(_h)
-        } else if(args.length >= 2) {
-            const _arg1 = args[0];
-            let arg1:Buffer
-            if(_arg1?.id) {arg1 = await tools.avatarTools.qcodeGetAvatar(_arg1.id)}
-            else{arg1 = await tools.avatarTools.urlToBuffer(_arg1.src)}
-            const _arg2 = args[1];
-            let arg2:Buffer
-            if(_arg2?.id) {arg2 = await tools.avatarTools.qcodeGetAvatar(_arg2.id)}
-            else{arg2 = await tools.avatarTools.urlToBuffer(_arg2.src)}
+        
+        // 收集两个参数以及一个self头像
+        const self = await tools.avatarTools.getSelfAvatar(s)
+        let arg1, arg2
+        let _h
+        arg1 = await tools.matcher.getArg(args,0)
+        arg2 = await tools.matcher.getArg(args,1)
+        if(arg1 && arg2) {
             const hug = await MemeGenerator.hug(arg1, arg2)
-            const _h = tools.convert2SendMessage.gif2Message(hug)
-            s.send(_h)
+            _h = await tools.convert2SendMessage.gif2Message(hug)
+        } else if(arg1 || arg2) {
+            const hug = await MemeGenerator.hug(self, arg1 || arg2)
+            _h = await tools.convert2SendMessage.gif2Message(hug)
         }
+        if(_h)
+            s.send(_h)
+        else
+            s.send('参数过少')
     }
 }
 

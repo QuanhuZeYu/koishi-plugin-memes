@@ -1,4 +1,5 @@
 import { Matcher } from "../interface/matcher";
+import tools from "./_index";
 
 function xmlMatcher(match: string, message: string) {
     const result = [];
@@ -29,8 +30,17 @@ function argCollector(message: string): Array<Matcher> {
     return result;
 }
 
+
+async function getArg(args: Array<Matcher>, index:number):Promise<Buffer|void> {
+    let arg:Buffer|undefined
+    if(args[index]?.id){arg = await tools.avatarTools.qcodeGetAvatar(args[index].id)}
+    else if(args[index]?.src){arg = await tools.avatarTools.urlToBuffer(args[index].src)}
+    else {arg = undefined}
+    return arg
+}
+
 const matcher = {
-    xmlMatcher,argCollector
+    xmlMatcher,argCollector,getArg
 }
 
 export default matcher
