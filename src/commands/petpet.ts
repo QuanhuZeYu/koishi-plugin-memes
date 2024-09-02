@@ -1,8 +1,7 @@
 import { Argv, h } from "koishi";
-import memeTooles from '../tools'
+import memeTooles from '../tools/_index'
 import { MemeGenerator } from "@quanhuzeyu/memelib";
-import { logger } from "..";
-import tools from "../tools";
+import tools from "../tools/_index";
 
 /**
  * 当使用 petpet 指令触发的函数
@@ -13,11 +12,11 @@ async function petpet(session:Argv, message:string) {
     const s = session.session
     // console.log(`arg:\n${arg1}`)
     if (typeof message === 'string') {
-        const id = tools.matcher.xmlMatcher('id',message)
-        const img = message.match(/src="(.*)"/)
+        const args = tools.matcher.argCollector(message)
+        const arg1 = args[0]
         // 参数如果是at的逻辑
-        if (id != undefined) {
-            const atUserAvaUrl = `http://thirdqq.qlogo.cn/headimg_dl?dst_uin=${id[0]}&spec=640`
+        if (arg1?.id) {
+            const atUserAvaUrl = `http://thirdqq.qlogo.cn/headimg_dl?dst_uin=${arg1.id}&spec=640`
             const pet = await urlToPet(atUserAvaUrl)
             if (typeof pet === 'object') {
                 s.send(pet)
@@ -26,12 +25,10 @@ async function petpet(session:Argv, message:string) {
             }
         } else 
         // 参数如果是图片的逻辑
-        if (img) {
-            const pet = await urlToPet(img[1])
+        if (arg1?.src) {
+            const pet = await urlToPet(arg1.src)
             s.send(pet)
         }
-    }else if (typeof message ==='number') {
-        defaultPetpet(session)
     } else {
         // 默认方法： 使用发送指令的人的头像作为摸摸头对象
         defaultPetpet(session)

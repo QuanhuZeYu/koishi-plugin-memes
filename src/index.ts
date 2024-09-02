@@ -1,6 +1,7 @@
 import { Context, Logger } from 'koishi'
 import {Schema} from 'koishi'
-import commands from './commands'
+import commands from './commands/_index'
+import tools from './tools/_index'
 
 export const name = '@quanhuzeyu/memes'
 export const QHZY_MEME_BASEDIR = __dirname
@@ -19,11 +20,22 @@ export function apply(ctx: Context) {
       // console.log(argv)
       // console.log(argv.session.event.user)
     })
-    ctx.command('hug')
+    ctx.command('hug [message:text]')
       .usage('hug+空格+参数(最少1个最多两个)<@对象|图片>(参数之间可不需要空格，指令和参数之间空格不可少)')
       .action( (_, mes) => {
         commands.hug(_, mes)
       })
+
+
+    // 测试用指令
+    // ctx.command('hq-test [message:text]')
+    //   .action((_,mes)=> {
+    //     logger.info(mes)
+    //     const args = tools.matcher.argCollector(mes)
+    //     for(const arg of args) {
+    //       logger.info(arg)
+    //     }
+    //   })
 }
 
 function myLogger() {
