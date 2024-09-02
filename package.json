@@ -1,7 +1,7 @@
 {
   "name": "@quanhuzeyu/koishi-plugin-memes",
   "description": "纯ts实现的memes生成，无需部署额外的后端服务",
-  "version": "1.1.2-beta.2",
+  "version": "1.1.2-beta.3",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "homepage": "https://github.com/QuanhuZeYu/koishi-plugin-memes",
@@ -15,7 +15,7 @@
     "test": "echo \"No tests available\"",
     "test1": "node lib/index.js",
     "build": "tsc",
-    "allpub": "npm run pubgit && npm run pubnpm",
+    "allpub": "npm run build && npm run pubgit && npm run pubnpm",
     "pubgit": "npm publish --workspace @quanhuzeyu/koishi-plugin-memes --registry=https://npm.pkg.github.com",
     "pubnpm": "npm publish --workspace @quanhuzeyu/koishi-plugin-memes --registry=https://registry.npmjs.org",
     "clean": "rmdir /s /q lib",
