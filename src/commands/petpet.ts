@@ -1,6 +1,8 @@
 import { Argv, h } from "koishi";
 import memeTooles from '../tools'
 import { MemeGenerator } from "@quanhuzeyu/memelib";
+import { logger } from "..";
+import tools from "../tools";
 
 /**
  * 当使用 petpet 指令触发的函数
@@ -8,15 +10,14 @@ import { MemeGenerator } from "@quanhuzeyu/memelib";
  * @param message 
  */
 async function petpet(session:Argv, message:string) {
-    console.log(message)
     const s = session.session
     // console.log(`arg:\n${arg1}`)
     if (typeof message === 'string') {
-        const id = message.match(/id="(.*)"/)
+        const id = tools.matcher.xmlMatcher('id',message)
         const img = message.match(/src="(.*)"/)
         // 参数如果是at的逻辑
         if (id != undefined) {
-            const atUserAvaUrl = `http://thirdqq.qlogo.cn/headimg_dl?dst_uin=${id[1]}&spec=640`
+            const atUserAvaUrl = `http://thirdqq.qlogo.cn/headimg_dl?dst_uin=${id[0]}&spec=640`
             const pet = await urlToPet(atUserAvaUrl)
             if (typeof pet === 'object') {
                 s.send(pet)
@@ -67,14 +68,14 @@ async function defaultPetpet(argV:Argv, message:string=undefined):Promise<void> 
  */
 async function urlToPet(url:string):Promise<h|string> {
     // 通过URL获取图片并将其转换为Buffer
-    const buf = await memeTooles.urlToBuffer(url)
+    const buf = await memeTooles.avatarTools.urlToBuffer(url)
     const _b = MemeGenerator.tools.imageTools.isGif(buf)
     if (_b === false) {
         try {
             // 将Buffer中的图片裁剪为圆形
             const cir = await MemeGenerator.tools.imageTools.cropToCircle(buf)
             // 使用处理后的圆形图片生pet
-            const pet = await MemeGenerator.Petpet(cir)
+            const pet = await MemeGenerator.petpet.craftPetpet(cir)
             // 检查生成的宠物头像是否为Buffer类型
             if ( pet instanceof Buffer) {
                 return h.image(pet, 'image/gif')
@@ -88,7 +89,7 @@ async function urlToPet(url:string):Promise<h|string> {
             throw err
         }
     } else if (_b === true) {
-        const pet = await MemeGenerator.Petpet(buf,true)
+        const pet = await MemeGenerator.petpet.craftPetpet(buf,true)
         if (pet instanceof Buffer) {
             return h.image(pet, 'image/gif')
         } else {
