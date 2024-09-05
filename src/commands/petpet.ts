@@ -1,6 +1,6 @@
 import { Argv, h } from "koishi";
 import memeTooles from '../tools/_index'
-import { MemeGenerator } from "@quanhuzeyu/memelib";
+import { getMemelib } from "../context";
 import tools from "../tools/_index";
 
 /**
@@ -64,6 +64,7 @@ async function defaultPetpet(argV:Argv, message:string=undefined):Promise<void> 
  * @returns 返回一个Promise，解析为头像图片的Buffer或错误信息字符串
  */
 async function urlToPet(url:string):Promise<h|string> {
+    const MemeGenerator = getMemelib().memelib
     // 通过URL获取图片并将其转换为Buffer
     const buf = await memeTooles.avatarTools.urlToBuffer(url)
     const _b = MemeGenerator.tools.imageTools.isGif(buf)
@@ -72,7 +73,7 @@ async function urlToPet(url:string):Promise<h|string> {
             // 将Buffer中的图片裁剪为圆形
             const cir = await MemeGenerator.tools.imageTools.cropToCircle(buf)
             // 使用处理后的圆形图片生pet
-            const pet = await MemeGenerator.petpet.craftPetpet(cir)
+            const pet = await MemeGenerator.craftPetpet(cir)
             // 检查生成的宠物头像是否为Buffer类型
             if ( pet instanceof Buffer) {
                 return h.image(pet, 'image/gif')
@@ -86,7 +87,7 @@ async function urlToPet(url:string):Promise<h|string> {
             throw err
         }
     } else if (_b === true) {
-        const pet = await MemeGenerator.petpet.craftPetpet(buf,true)
+        const pet = await MemeGenerator.craftPetpet(buf,true)
         if (pet instanceof Buffer) {
             return h.image(pet, 'image/gif')
         } else {

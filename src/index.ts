@@ -2,16 +2,22 @@ import { Context, Logger } from 'koishi'
 import {Schema} from 'koishi'
 import commands from './commands/_index'
 import tools from './tools/_index'
+import {} from "@quanhuzeyu/koishi-plugin-memelib"
+import { setMemelib } from './context'
 
 export const name = '@quanhuzeyu/memes'
+export const inject = {
+	required: ['memelib']
+}
 export const QHZY_MEME_BASEDIR = __dirname
-export const logger = myLogger()
 
 export interface Config {}
 
 export const Config: Schema<Config> = Schema.object({})
 
 export function apply(ctx: Context) {
+	setMemelib(ctx.memelib)
+
   	ctx.command('petpet [message:text]')
 		.usage('petpet+空格+参数(1个)<@对象|图片|GIF>')
 		.action( (_, mes) => {

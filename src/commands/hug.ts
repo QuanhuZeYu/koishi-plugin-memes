@@ -2,19 +2,18 @@ import Ffmpeg from 'fluent-ffmpeg';
 
 import { Argv, h, Logger } from "koishi";
 import tools from "../tools/_index";
-import { logger, QHZY_MEME_BASEDIR } from "..";
+import { QHZY_MEME_BASEDIR } from "..";
 import fs from 'fs/promises'
 import path from "path";
-import { MemeGenerator } from "@quanhuzeyu/memelib";
+import { getMemelib } from '../context';
 import { read } from 'fs';
 import { Readable } from 'node:stream';
 
 async function hug(argv: Argv, message: string) {
-    const baseDir = QHZY_MEME_BASEDIR;
     const s = argv.session;
     // region 参数验证
     if (typeof message === 'string') {
-
+        const MemeGenerator = getMemelib().memelib
         const id = tools.matcher.xmlMatcher('id', message);
         const imgs = tools.matcher.xmlMatcher('src', message);
         // 从头到尾收集参数
