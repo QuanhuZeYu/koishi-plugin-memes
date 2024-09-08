@@ -14,6 +14,7 @@
     "pause": "timeout /t 1 /nobreak > nul",
     "test": "echo \"No tests available\"",
     "test1": "node lib/index.js",
+    "build": "node build.js",
     "allpub": "npm run pubgit && npm run pubnpm",
     "pubgit": "npm publish --registry=https://npm.pkg.github.com",
     "pubnpm": "npm publish --registry=https://registry.npmjs.org",
