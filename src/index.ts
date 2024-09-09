@@ -37,9 +37,9 @@ export function apply(ctx: Context) {
 			commands.hammer(_, mes)
 		})
 	ctx.command('注意力涣散 [message:text]')
-	.usage('注意力涣散+空格+参数(最多读取一个，可不提供)<@对象|图片>')
-	.action( (_, mes) => {
-		commands.distracted(_, mes)
+		.usage('注意力涣散+空格+参数(最多读取一个，可不提供)<@对象|图片>')
+		.action( (_, mes) => {
+			commands.distracted(_, mes)
 	})
 
 
