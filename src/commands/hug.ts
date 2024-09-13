@@ -1,43 +1,36 @@
 import Ffmpeg from 'fluent-ffmpeg';
 
-import { Argv, h, Logger } from "koishi";
+import { Argv, h } from "koishi";
 import tools from "../tools/_index";
-import { QHZY_MEME_BASEDIR } from "..";
-import fs from 'fs/promises'
-import path from "path";
-import { getMemelib } from '../context';
-import { read } from 'fs';
 import { Readable } from 'node:stream';
+import Data from '../Data';
+
 
 async function hug(argv: Argv, message: string) {
-    const s = argv.session;
-    // region 参数验证
-    if (typeof message === 'string') {
-        const MemeGenerator = getMemelib().memelib
-        const id = tools.matcher.xmlMatcher('id', message);
-        const imgs = tools.matcher.xmlMatcher('src', message);
-        // 从头到尾收集参数
-        const args = tools.matcher.argCollector(message);
-        
-        // 收集两个参数以及一个self头像
-        const self = await tools.avatarTools.getSelfAvatar(s)
-        let arg1, arg2
-        let _h
-        arg1 = await tools.matcher.getArg(args,0)
-        arg2 = await tools.matcher.getArg(args,1)
-        if(arg1 && arg2) {
-            const hug = await MemeGenerator.hug(arg1, arg2)
-            _h = await tools.convert2SendMessage.gif2Message(hug)
-        } else if(arg1 || arg2) {
-            const input = arg1||arg2
-            const hug = await MemeGenerator.hug(self, input)
-            _h = await tools.convert2SendMessage.gif2Message(hug)
-        }
-        if(_h)
-            s.send(_h)
-        else
-            s.send('参数过少')
-    }
+	const session = argv.session;
+	const MemeGenerator = Data.baseData.getMemelib()
+	try {
+		// 获取所有参数
+		const args = await tools.matcher.getAllArgs(argv, message);
+		// 如果没有足够的参数，发送帮助提示
+		if (args.length < 1) {
+			await session.send('参数过少或识别失败，请使用`指令 -h`的方式查看帮助');
+			return;
+		}
+		// 获取自定义或默认的头像
+		const [arg1, arg2] = args;
+		const selfAvatar = await tools.avatarTools.getSelfAvatar(session);
+		// 生成结果图片
+		const result = args.length === 1
+			? await MemeGenerator.memelib.hug(selfAvatar, arg1)
+			: await MemeGenerator.memelib.hug(arg1, arg2);
+		// 发送生成的图片
+		await session.send(h.image(result, 'image/gif'));
+	} catch (error) {
+		// 错误处理，确保程序健壮性
+		console.error('处理 hug 命令时出错:', error);
+		await session.send('执行命令时发生了未知错误，请稍后再试。');
+	}
 }
 
 export default hug
@@ -45,34 +38,34 @@ export default hug
 
 // region 私有函数区
 async function compressGif(inputBuffer: Buffer): Promise<Buffer> {
-    const inStream = bufferToStream(inputBuffer);
-    return new Promise((resolve, reject) => {
-        const output: Buffer[] = [];
+	const inStream = bufferToStream(inputBuffer);
+	return new Promise((resolve, reject) => {
+		const output: Buffer[] = [];
 
-        const ffmpegProcess = Ffmpeg(inStream)
-            .outputOptions('-f gif')
-            .on('end', () => {
-                // 转换完成，将所有数据片段组合成一个 Buffer
-                resolve(Buffer.concat(output));
-            })
-            .on('error', (err) => {
-                reject(err);
-            })
-            .pipe();
+		const ffmpegProcess = Ffmpeg(inStream)
+			.outputOptions('-f gif')
+			.on('end', () => {
+				// 转换完成，将所有数据片段组合成一个 Buffer
+				resolve(Buffer.concat(output));
+			})
+			.on('error', (err) => {
+				reject(err);
+			})
+			.pipe();
 
-        ffmpegProcess.on('data', (chunk) => {
-            output.push(chunk);
-        });
+		ffmpegProcess.on('data', (chunk) => {
+			output.push(chunk);
+		});
 
-        ffmpegProcess.on('error', (err) => {
-            reject(err);
-        });
-    });
+		ffmpegProcess.on('error', (err) => {
+			reject(err);
+		});
+	});
 }
 
 function bufferToStream(buffer: Buffer): Readable {
-    const stream = new Readable();
-    stream.push(buffer);
-    stream.push(null);
-    return stream;
+	const stream = new Readable();
+	stream.push(buffer);
+	stream.push(null);
+	return stream;
 }
