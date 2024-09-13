@@ -33,6 +33,23 @@ function argCollector(message: string): Array<ArgMatcher> {
     return result;
 }
 
+/**
+ * 查找消息中的图片参数（仅保留 src 参数，排除 id 参数）
+ * @param message 输入的消息字符串
+ * @returns 匹配的图片参数数组
+ */
+function imgCollector(message: string): Array<ArgMatcher> {
+    if (!message) return []; // 防御性编程：检查 message 是否为空
+
+    // 使用 argCollector 获取所有参数
+    const allArgs = argCollector(message);
+
+    // 过滤掉所有 id 参数，仅保留 src 参数
+    const imgArgs = allArgs.filter(arg => 'src' in arg);
+
+    return imgArgs;
+}
+
 async function getCollecterArgs(args: Array<ArgMatcher>, index: number): Promise<Buffer | void> {
     if (!args || !args[index]) return; // 防御性编程：检查args是否有效
     return await identifyArg(args[index]);
@@ -59,7 +76,7 @@ async function identifyArg(arg: ArgMatcher): Promise<Buffer | void> {
 
 async function getQuoteArgs(argV: Argv): Promise<Buffer[]> {
     const quoteContent = argV?.session?.quote?.content || ''; // 防御性编程：默认值为空字符串
-    const collectArgs = argCollector(quoteContent);
+    const collectArgs = imgCollector(quoteContent);
 
     const args = await Promise.all(
         collectArgs.map(async (arg) => {
