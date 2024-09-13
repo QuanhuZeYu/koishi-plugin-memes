@@ -1,6 +1,7 @@
 import { Argv } from "koishi";
 import { ArgMatcher } from "../interface/matcher";
 import tools from "./_index";
+import Data from "../Data";
 
 function xmlMatcher(match: string, message: string) {
     const result = [];
@@ -62,15 +63,25 @@ async function getCollecterArgs(args: Array<ArgMatcher>, index: number): Promise
  */
 async function identifyArg(arg: ArgMatcher): Promise<Buffer | void> {
     let r_arg: Buffer | void;
-    try {
-        if (arg?.id) {
+
+    if (arg?.id) {
+        try {
+            // 处理 ID 参数，尝试获取头像
             r_arg = await tools.avatarTools.qcodeGetAvatar(arg.id);
-        } else if (arg?.src) {
-            r_arg = await tools.avatarTools.urlToBuffer(arg.src);
+        } catch (error) {
+            // 捕获 ID 处理中的错误
+            Data.baseData.getLogger().error(`无法获取ID为${arg.id}的头像：`, error);
         }
-    } catch (error) {
-        console.error('识别参数时发生错误：', error);
+    } else if (arg?.src) {
+        try {
+            // 处理 SRC 参数，尝试获取图片
+            r_arg = await tools.avatarTools.urlToBuffer(arg.src);
+        } catch (error) {
+            // 捕获 SRC 处理中的错误
+            Data.baseData.getLogger().error(`无法获取图片URL为${arg.src}的图片：`, error);
+        }
     }
+
     return r_arg;
 }
 
