@@ -5,18 +5,17 @@ import tools from "../tools/_index";
 async function suck(av:Argv,ms:string) {
     const MemeGenerator = Data.baseData.getMemelib()
     const s = av.session
-    const args = tools.matcher.argCollector(ms)
-    let arg1:any = args[0]
-    if(arg1?.id){arg1 = await tools.avatarTools.qcodeGetAvatar(arg1.id)}
-    else if(arg1?.src){arg1 = await tools.avatarTools.urlToBuffer(arg1.src)}
-    else {arg1 = undefined}
-    if(arg1){
-        const suck = await MemeGenerator.memelib.suck(arg1)
-        await s.send(h.image(suck, 'image/gif'))
-    } else {
-        const self = await tools.avatarTools.getSelfAvatar(av.session)
-        const suck = await MemeGenerator.memelib.suck(self)
-        await s.send(h.image(suck, 'image/gif'))
+    try {
+        const args = await tools.matcher.getAllArgs(av, ms)
+        const arg1 = args[0]
+        const selfAvatar = await tools.avatarTools.getSelfAvatar(s)
+        const result = args.length < 1
+            ? await MemeGenerator.memelib.suck(selfAvatar)
+            : await MemeGenerator.memelib.suck(arg1)
+        s.send(h.image(result,'image/gif'))
+    } catch (e) {
+        console.error('处理 hug 命令时出错:', e)
+		await s.send('执行命令时发生了未知错误，请稍后再试。')
     }
 }
 
