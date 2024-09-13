@@ -1,9 +1,9 @@
 import { Argv } from "koishi";
 import tools from "../tools/_index";
-import { getMemelib } from "../context";
+import Data from "../Data";
 
 async function hammer(argv:Argv,mes:string) {
-    const MemeGenerator = getMemelib()
+    const MemeGenerator = Data.baseData.getMemelib()
     const s = argv.session
     const args = tools.matcher.argCollector(mes)
     let arg1:any = args[0]

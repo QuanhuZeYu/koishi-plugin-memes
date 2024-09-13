@@ -1,9 +1,9 @@
 import { Argv } from "koishi";
-import { getMemelib } from "../context";
+import Data from "../Data";
 import tools from "../tools/_index";
 
 async function distracted(av:Argv,ms:string) {
-    const MemeGenerator = getMemelib()
+    const MemeGenerator = Data.baseData.getMemelib()
     const s = av.session
     const args = tools.matcher.argCollector(ms)
     let arg1:any = args[0]

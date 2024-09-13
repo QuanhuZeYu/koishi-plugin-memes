@@ -1,6 +1,6 @@
 import { Argv, h } from "koishi";
 import memeTooles from '../tools/_index'
-import { getMemelib } from "../context";
+import Data from "../Data";
 import tools from "../tools/_index";
 
 /**
@@ -64,7 +64,7 @@ async function defaultPetpet(argV:Argv, message:string=undefined):Promise<void> 
  * @returns 返回一个Promise，解析为头像图片的Buffer或错误信息字符串
  */
 async function urlToPet(url:string):Promise<h|string> {
-    const MemeGenerator = getMemelib().memelib
+    const MemeGenerator = Data.baseData.getMemelib().memelib
     // 通过URL获取图片并将其转换为Buffer
     const buf = await memeTooles.avatarTools.urlToBuffer(url)
     const _b = MemeGenerator.tools.imageTools.isGif(buf)
