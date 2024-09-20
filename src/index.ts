@@ -16,8 +16,8 @@ export interface Config { }
 export const Config: Schema<Config> = Schema.object({})
 
 export function apply(ctx: Context) {
-	Data.baseData.setLogger(ctx.logger)
-	Data.baseData.setMemelib(ctx.memelib)
+	Data.baseData.logger = ctx.logger
+	Data.baseData.memelib = ctx.memelib
 
 	const memes = ctx.command('q-memes', "表情包制作器").usage("输入指令+空格+图片/@某人/文字；实现表情包制作")
 
@@ -49,6 +49,11 @@ export function apply(ctx: Context) {
 	memes.subcommand('clown [message:text]', "制作小丑").alias("小丑")
 		.action((argv, message) => {
 			commands.clown(argv, message)
+		})
+
+	memes.subcommand('clownflip [message:text]', "制作翻转小丑").alias("翻转小丑")
+		.action((argv, message) => {
+			commands.clownFlip(argv, message)
 		})
 
 

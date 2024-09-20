@@ -8,7 +8,8 @@ import Data from '../Data';
 
 async function hug(argv: Argv, message: string) {
 	const session = argv.session;
-	const MemeGenerator = Data.baseData.getMemelib()
+	const { baseData } = Data
+	const { memelib } = baseData
 	try {
 		// 获取所有参数
 		const args = await tools.matcher.getAllArgs(argv, message);
@@ -22,8 +23,8 @@ async function hug(argv: Argv, message: string) {
 		const selfAvatar = await tools.avatarTools.getSelfAvatar(session);
 		// 生成结果图片
 		const result = args.length === 1
-			? await MemeGenerator.memelib.hug(selfAvatar, arg1)
-			: await MemeGenerator.memelib.hug(arg1, arg2);
+			? await memelib.memelib.hug(selfAvatar, arg1)
+			: await memelib.memelib.hug(arg1, arg2);
 		// 发送生成的图片
 		await session.send(h.image(result, 'image/gif'));
 	} catch (error) {
