@@ -41,13 +41,10 @@ function argCollector(message: string): Array<ArgMatcher> {
  */
 function imgCollector(message: string): Array<ArgMatcher> {
     if (!message) return []; // 防御性编程：检查 message 是否为空
-
     // 使用 argCollector 获取所有参数
     const allArgs = argCollector(message);
-
     // 过滤掉所有 id 参数，仅保留 src 参数
     const imgArgs = allArgs.filter(arg => 'src' in arg);
-
     return imgArgs;
 }
 
@@ -97,6 +94,11 @@ async function getQuoteArgs(argV: Argv): Promise<Buffer[]> {
     return args.filter(Boolean) as Buffer[]; // 过滤掉 undefined 的值
 }
 
+/**
+ * 提取命令参数中的图片参数，返回图片Buffer的数组
+ * @param message 
+ * @returns Buffer[]
+ */
 async function getMessageArgs(message: string): Promise<Buffer[]> {
     const matchArgs: ArgMatcher[] = argCollector(message || ''); // 防御性编程：默认值为空字符串
 
@@ -109,10 +111,18 @@ async function getMessageArgs(message: string): Promise<Buffer[]> {
 }
 
 async function getAllArgs(argv: Argv, message: string): Promise<Buffer[]> {
-    const quoteArgs = await getQuoteArgs(argv);
+    const args = []
+    const quoteArgs: Buffer | undefined = await getQuoteArgs(argv)[0];  // 只取一个参数
+    let shiftCount = 0
+    if (quoteArgs) { shiftCount = quoteArgs.length }
     const messageArgs = await getMessageArgs(message);
-    const args = quoteArgs.concat(messageArgs);
-    return args;
+    for (let i = 0; i < shiftCount; i++) {
+        messageArgs.shift()
+    }  // 移除引用消息中的参数
+    args.push(quoteArgs ? quoteArgs : undefined, ...messageArgs)
+    const filteredArgs = args.filter(arg => arg instanceof Buffer && arg !== undefined);
+    // Data.baseData.getLogger().info(filteredArgs)
+    return filteredArgs;
 }
 
 const matcher = {

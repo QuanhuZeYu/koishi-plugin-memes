@@ -1,7 +1,7 @@
 import baseData from "./baseData";
 
-const data = {
+const Data = {
     baseData
 }
 
-export default data
+export default Data
