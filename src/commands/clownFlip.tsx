@@ -11,8 +11,12 @@ async function clownFlip(argv: Argv, message: string) {
     if (messageImageArgs.length < 1) {
         const self = await tools.avatarTools.getSelfAvatar(argv.session)
         const result = await meme.clownFlip(self)
+        let img = <img src={"data:image/png;base64," + result.toString('base64')} />;
+        if (memelib.memelib.tools.imageTools.isGif(result)) {
+            img = <img src={"data:image/gif;base64," + result.toString('base64')} />;
+        }
         const messageStruct = <message>
-            <img src={'data:image/png;base64,' + result.toString('base64')} />
+            {img}
         </message>;
         return await argv.session.send(messageStruct)
     }
