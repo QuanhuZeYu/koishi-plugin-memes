@@ -19,6 +19,17 @@ async function clownFlip(argv: Argv, message: string) {
             {img}
         </message>;
         return await argv.session.send(messageStruct)
+    } else {
+        const input = messageImageArgs[0]
+        const result = await meme.clownFlip(input)
+        let img = <img src={"data:image/png;base64," + result.toString('base64')} />;
+        if (memelib.memelib.tools.imageTools.isGif(result)) {
+            img = <img src={"data:image/gif;base64," + result.toString('base64')} />;
+        }
+        const messageStruct = <message>
+            {img}
+        </message>;
+        return await argv.session.send(messageStruct)
     }
 }
 
